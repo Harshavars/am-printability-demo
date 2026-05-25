@@ -241,29 +241,23 @@ def main():
         st.markdown("---")
         st.header("📋 Analysis Results")
         
-        # Decision banner
-        decision_colors = {
-            Decision.FEASIBLE: "success-box",
-            Decision.NEEDS_REVIEW: "warning-box",
-            Decision.REJECT: "danger-box",
-            Decision.INSUFFICIENT_DATA: "warning-box"
-        }
-        
-        decision_icons = {
-            Decision.FEASIBLE: "✅",
-            Decision.NEEDS_REVIEW: "⚠️",
-            Decision.REJECT: "❌",
-            Decision.INSUFFICIENT_DATA: "❓"
-        }
-        
-        st.markdown(
-            f'<div class="{decision_colors[result.decision]}">'
-            f'<h2>{decision_icons[result.decision]} {result.decision.value}</h2>'
-            f'<p><strong>Confidence:</strong> {result.confidence:.0%} | '
-            f'<strong>Risk Score:</strong> {result.risk_score:.0f}/100</p>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+       # Decision banner
+decision_value = result.decision.value
+if "Feasible" in decision_value:
+    decision_class = "success-box"
+elif "Review" in decision_value:
+    decision_class = "warning-box"
+else:
+    decision_class = "danger-box"
+
+st.markdown(
+    f'<div class="{decision_class}">'
+    f'<h2>{decision_value}</h2>'
+    f'<p><strong>Confidence:</strong> {result.confidence:.0%} | '
+    f'<strong>Risk Score:</strong> {result.risk_score:.0f}/100</p>'
+    f'</div>',
+    unsafe_allow_html=True
+)
         
         # Metrics row
         if result.geometric_features:
